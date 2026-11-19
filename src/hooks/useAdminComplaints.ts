@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useMemo, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { fetchComplaints, queryKeys, type ComplaintFilters } from '../lib/api';
+import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { fetchComplaints, queryKeys, type ComplaintFilters } from "../lib/api";
 import type {
   ComplaintCategory,
   ComplaintPriority,
   ComplaintStatus,
   MealPeriod,
-} from '../types/complaint';
-import { EMPTY_SUMMARY } from '../constants/admin';
+} from "../types/complaint";
+import { EMPTY_SUMMARY } from "../constants/admin";
 
 export interface DailyMatrixRow {
   date: string;
@@ -26,12 +26,16 @@ export interface DailyMatrixRow {
  * Extracted from AdminDashboard so the shell only coordinates sections.
  */
 export function useAdminComplaints() {
-  const [filterDate, setFilterDate] = useState('');
-  const [filterMealPeriod, setFilterMealPeriod] = useState<MealPeriod | ''>('');
-  const [filterCategory, setFilterCategory] = useState<ComplaintCategory | ''>('');
-  const [filterStatus, setFilterStatus] = useState<ComplaintStatus | ''>('');
-  const [filterPriority, setFilterPriority] = useState<ComplaintPriority | ''>('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [filterDate, setFilterDate] = useState("");
+  const [filterMealPeriod, setFilterMealPeriod] = useState<MealPeriod | "">("");
+  const [filterCategory, setFilterCategory] = useState<ComplaintCategory | "">(
+    "",
+  );
+  const [filterStatus, setFilterStatus] = useState<ComplaintStatus | "">("");
+  const [filterPriority, setFilterPriority] = useState<ComplaintPriority | "">(
+    "",
+  );
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filters = useMemo<ComplaintFilters>(
     () => ({
@@ -42,7 +46,14 @@ export function useAdminComplaints() {
       priority: filterPriority,
       q: searchQuery,
     }),
-    [filterDate, filterMealPeriod, filterCategory, filterStatus, filterPriority, searchQuery],
+    [
+      filterDate,
+      filterMealPeriod,
+      filterCategory,
+      filterStatus,
+      filterPriority,
+      searchQuery,
+    ],
   );
 
   const complaintsQuery = useQuery({
@@ -56,9 +67,16 @@ export function useAdminComplaints() {
   const urgentQueue = useMemo(
     () =>
       complaints
-        .filter((item) => item.status === 'pendiente' || item.status === 'en_revision')
+        .filter(
+          (item) =>
+            item.status === "pendiente" || item.status === "en_revision",
+        )
         .sort((a, b) => {
-          const priorityRank: Record<ComplaintPriority, number> = { alta: 0, media: 1, baja: 2 };
+          const priorityRank: Record<ComplaintPriority, number> = {
+            alta: 0,
+            media: 1,
+            baja: 2,
+          };
           if (priorityRank[a.priority] !== priorityRank[b.priority]) {
             return priorityRank[a.priority] - priorityRank[b.priority];
           }
@@ -82,7 +100,7 @@ export function useAdminComplaints() {
         total: 0,
       };
       entry[item.mealPeriod] += 1;
-      if (item.status === 'resuelto' || item.status === 'archivado') {
+      if (item.status === "resuelto" || item.status === "archivado") {
         entry.resuelto += 1;
       } else {
         entry.pendiente += 1;
@@ -91,25 +109,27 @@ export function useAdminComplaints() {
       grouped.set(item.incidentDate, entry);
     }
 
-    return Array.from(grouped.values()).sort((a, b) => b.date.localeCompare(a.date));
+    return Array.from(grouped.values()).sort((a, b) =>
+      b.date.localeCompare(a.date),
+    );
   }, [complaints]);
 
   const hasActiveFilters = Boolean(
     filterDate ||
-      filterMealPeriod ||
-      filterCategory ||
-      filterStatus ||
-      filterPriority ||
-      searchQuery,
+    filterMealPeriod ||
+    filterCategory ||
+    filterStatus ||
+    filterPriority ||
+    searchQuery,
   );
 
   const resetFilters = () => {
-    setFilterDate('');
-    setFilterMealPeriod('');
-    setFilterCategory('');
-    setFilterStatus('');
-    setFilterPriority('');
-    setSearchQuery('');
+    setFilterDate("");
+    setFilterMealPeriod("");
+    setFilterCategory("");
+    setFilterStatus("");
+    setFilterPriority("");
+    setSearchQuery("");
   };
 
   return {

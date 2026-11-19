@@ -62,6 +62,7 @@ export function AdminDashboard({
   const [bannerMessage, setBannerMessage] = useState<AdminBannerMessage | null>(
     null,
   );
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const [inspectingItem, setInspectingItem] = useState<ComplaintRecord | null>(
     null,
@@ -206,12 +207,14 @@ export function AdminDashboard({
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50 text-slate-900 lg:flex-row lg:items-start">
+    <div className="flex min-h-screen bg-slate-50 text-slate-900 lg:items-start">
       <AdminSidebar
         activeSection={activeSection}
         pendingCount={summary.byStatus.pendiente}
         adminName={sessionState.admin?.name ?? ""}
         adminEmail={sessionState.admin?.email ?? ""}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
         onSelectSection={setActiveSection}
         onOpenStudentPortal={onOpenStudentPortal}
         onLogoutAdmin={onLogoutAdmin}
@@ -222,11 +225,12 @@ export function AdminDashboard({
           sectionTitle={SECTION_LABELS[activeSection]}
           canExport={complaints.length > 0}
           isExporting={isExporting}
+          onOpenSidebar={() => setIsSidebarOpen(true)}
           onExportPdf={handleExportPdf}
           onLogoutAdmin={onLogoutAdmin}
         />
 
-        <main className="mx-auto w-full max-w-7xl flex-1 space-y-6 px-6 py-6">
+        <main className="mx-auto w-full max-w-7xl flex-1 space-y-6 px-4 py-4 sm:px-6 sm:py-6">
           {bannerMessage && (
             <div
               role="status"

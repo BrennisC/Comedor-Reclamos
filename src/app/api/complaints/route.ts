@@ -99,11 +99,11 @@ export async function POST(req: NextRequest) {
     const incidentDate =
       typeof body.incidentDate === 'string' ? body.incidentDate.trim() : '';
 
-    if (description.length < 10) {
+    if (description.length < 60) {
       return NextResponse.json(
         {
           error:
-            'Describe tu reclamo con al menos 10 caracteres para poder clasificarlo.',
+            'Describe tu reclamo con al menos 60 caracteres para poder clasificarlo.',
         },
         { status: 400 }
       );

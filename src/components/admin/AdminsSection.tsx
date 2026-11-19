@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, type FormEvent } from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Plus, UserPlus } from 'lucide-react';
-import { createAdminUser, fetchAdminUsers, queryKeys } from '../../lib/api';
-import type { AdminBannerMessage } from '../../constants/admin';
+import { useState, type FormEvent } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Plus, UserPlus } from "lucide-react";
+import { createAdminUser, fetchAdminUsers, queryKeys } from "@/lib/api";
+import type { AdminBannerMessage } from "@/constants/admin";
 
 interface AdminsSectionProps {
   onNotice: (message: AdminBannerMessage) => void;
@@ -13,9 +13,9 @@ interface AdminsSectionProps {
 export function AdminsSection({ onNotice }: AdminsSectionProps) {
   const queryClient = useQueryClient();
 
-  const [newAdminName, setNewAdminName] = useState('');
-  const [newAdminEmail, setNewAdminEmail] = useState('');
-  const [newAdminPassword, setNewAdminPassword] = useState('');
+  const [newAdminName, setNewAdminName] = useState("");
+  const [newAdminEmail, setNewAdminEmail] = useState("");
+  const [newAdminPassword, setNewAdminPassword] = useState("");
 
   const adminUsersQuery = useQuery({
     queryKey: queryKeys.adminUsers,
@@ -30,19 +30,22 @@ export function AdminsSection({ onNotice }: AdminsSectionProps) {
         password: newAdminPassword,
       }),
     onSuccess: async (created) => {
-      setNewAdminName('');
-      setNewAdminEmail('');
-      setNewAdminPassword('');
+      setNewAdminName("");
+      setNewAdminEmail("");
+      setNewAdminPassword("");
       await queryClient.invalidateQueries({ queryKey: queryKeys.adminUsers });
       onNotice({
-        type: 'ok',
+        type: "ok",
         text: `Administrador agregado: ${created.name} (${created.email}).`,
       });
     },
     onError: (err) => {
       onNotice({
-        type: 'error',
-        text: err instanceof Error ? err.message : 'No se pudo agregar el administrador.',
+        type: "error",
+        text:
+          err instanceof Error
+            ? err.message
+            : "No se pudo agregar el administrador.",
       });
     },
   });
@@ -65,20 +68,27 @@ export function AdminsSection({ onNotice }: AdminsSectionProps) {
         </div>
         <div className="divide-y divide-slate-200">
           {adminUsersQuery.isPending ? (
-            <div className="p-6 text-sm text-slate-500">Cargando administradores...</div>
+            <div className="p-6 text-sm text-slate-500">
+              Cargando administradores...
+            </div>
           ) : (adminUsersQuery.data?.length ?? 0) === 0 ? (
             <div className="p-6 text-sm text-slate-500">
               Sesión activa mediante variables de entorno del servidor.
             </div>
           ) : (
             adminUsersQuery.data?.map((adm) => (
-              <div key={adm.id} className="flex items-center justify-between gap-4 px-6 py-4">
+              <div
+                key={adm.id}
+                className="flex items-center justify-between gap-4 px-6 py-4"
+              >
                 <div>
-                  <p className="text-sm font-semibold text-slate-900">{adm.name}</p>
+                  <p className="text-sm font-semibold text-slate-900">
+                    {adm.name}
+                  </p>
                   <p className="text-xs text-slate-500">{adm.email}</p>
                 </div>
                 <span className="font-mono text-xs text-slate-400 tabular-nums">
-                  {adm.createdAt ? adm.createdAt.slice(0, 10) : ''}
+                  {adm.createdAt ? adm.createdAt.slice(0, 10) : ""}
                 </span>
               </div>
             ))
@@ -95,7 +105,9 @@ export function AdminsSection({ onNotice }: AdminsSectionProps) {
         </div>
         <form onSubmit={handleSubmit} className="space-y-4 p-6">
           <div>
-            <label className="block text-xs font-medium text-slate-700">Nombre completo</label>
+            <label className="block text-xs font-medium text-slate-700">
+              Nombre completo
+            </label>
             <input
               type="text"
               required
@@ -106,7 +118,9 @@ export function AdminsSection({ onNotice }: AdminsSectionProps) {
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-slate-700">Correo electrónico</label>
+            <label className="block text-xs font-medium text-slate-700">
+              Correo electrónico
+            </label>
             <input
               type="email"
               required
@@ -136,7 +150,9 @@ export function AdminsSection({ onNotice }: AdminsSectionProps) {
             className="inline-flex min-h-[42px] w-full items-center justify-center gap-2 rounded-lg bg-emerald-700 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-800 disabled:opacity-50 whitespace-nowrap"
           >
             <Plus className="h-4 w-4" />
-            {createAdminMutation.isPending ? 'Creando cuenta...' : 'Registrar administrador'}
+            {createAdminMutation.isPending
+              ? "Creando cuenta..."
+              : "Registrar administrador"}
           </button>
         </form>
       </section>

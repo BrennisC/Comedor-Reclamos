@@ -1,33 +1,33 @@
-import type { Metadata } from 'next';
-import { DM_Sans, JetBrains_Mono, Plus_Jakarta_Sans } from 'next/font/google';
-import type { ReactNode } from 'react';
-import './globals.css';
-import { Providers } from './providers';
+import type { Metadata } from "next";
+import { DM_Sans, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import type { ReactNode } from "react";
+import "./globals.css";
+import { Providers } from "./providers";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  weight: ['500', '600', '700', '800'],
-  variable: '--font-next-display',
-  display: 'swap',
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+  variable: "--font-next-display",
+  display: "swap",
 });
 
 const dmSans = DM_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-next-sans',
-  display: 'swap',
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-next-sans",
+  display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-next-mono',
-  display: 'swap',
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-next-mono",
+  display: "swap",
 });
 
-const APP_TITLE = 'Comedor Universitario — Portal de Reclamos';
+const APP_TITLE = "Comedor Universitario — Portal de Reclamos";
 const APP_DESCRIPTION =
-  'Plataforma estudiantil de reclamos y reportes diarios para el comedor universitario, con captura de fotos en WebP, almacenamiento en Neon Object Storage y control diario por dispositivo.';
+  "Plataforma estudiantil de reclamos y reportes diarios para el comedor universitario.";
 
 export const metadata: Metadata = {
   title: APP_TITLE,
@@ -35,10 +35,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: APP_TITLE,
     description: APP_DESCRIPTION,
-    type: 'website',
+    type: "website",
+  },
+  icons: {
+    icon: "/favicon.ico",
   },
   twitter: {
-    card: 'summary_large_image',
+    card: "summary_large_image",
     title: APP_TITLE,
     description: APP_DESCRIPTION,
   },

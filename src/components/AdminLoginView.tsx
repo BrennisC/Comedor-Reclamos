@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   useCallback,
@@ -8,8 +8,8 @@ import {
   useState,
   type FormEvent,
   type KeyboardEvent,
-} from 'react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+} from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   AlertCircle,
   ArrowLeft,
@@ -22,9 +22,9 @@ import {
   RefreshCw,
   Utensils,
   X,
-} from 'lucide-react';
-import { ApiError, loginAdmin, queryKeys } from '../lib/api';
-import type { AdminSessionState } from '../types/complaint';
+} from "lucide-react";
+import { ApiError, loginAdmin, queryKeys } from "@/lib/api";
+import type { AdminSessionState } from "@/types/complaint";
 
 interface AdminLoginViewProps {
   sessionState: AdminSessionState | undefined;
@@ -43,19 +43,19 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function validateCredentials(
   normalizedEmail: string,
-  passwordValue: string
+  passwordValue: string,
 ): LoginValidationResult {
   let emailError: string | null = null;
   let passwordError: string | null = null;
 
   if (!normalizedEmail) {
-    emailError = 'Ingresa tu correo electrónico de administrador.';
+    emailError = "Ingresa tu correo electrónico de administrador.";
   } else if (!EMAIL_REGEX.test(normalizedEmail)) {
-    emailError = 'El formato del correo electrónico no es válido.';
+    emailError = "El formato del correo electrónico no es válido.";
   }
 
   if (!passwordValue) {
-    passwordError = 'Ingresa tu contraseña de administrador.';
+    passwordError = "Ingresa tu contraseña de administrador.";
   }
 
   return {
@@ -75,8 +75,8 @@ export function AdminLoginView({
   const emailInputRef = useRef<HTMLInputElement | null>(null);
   const passwordInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [emailTouched, setEmailTouched] = useState(false);
   const [passwordTouched, setPasswordTouched] = useState(false);
   const [submittedOnce, setSubmittedOnce] = useState(false);
@@ -88,12 +88,12 @@ export function AdminLoginView({
 
   const validation = useMemo(
     () => validateCredentials(normalizedEmail, password),
-    [normalizedEmail, password]
+    [normalizedEmail, password],
   );
 
   const isEmailFormatValid = useMemo(
     () => EMAIL_REGEX.test(normalizedEmail),
-    [normalizedEmail]
+    [normalizedEmail],
   );
 
   const showEmailError =
@@ -116,7 +116,7 @@ export function AdminLoginView({
     },
     onSuccess: async () => {
       setErrorMessage(null);
-      setPassword('');
+      setPassword("");
       setPasswordTouched(false);
       setSubmittedOnce(false);
       await queryClient.invalidateQueries({ queryKey: queryKeys.adminSession });
@@ -126,7 +126,7 @@ export function AdminLoginView({
       if (err instanceof ApiError) {
         setErrorMessage(err.message);
       } else {
-        setErrorMessage('No se pudo verificar el acceso administrativo.');
+        setErrorMessage("No se pudo verificar el acceso administrativo.");
       }
       if (passwordInputRef.current) {
         passwordInputRef.current.focus();
@@ -136,19 +136,19 @@ export function AdminLoginView({
 
   const handlePasswordKeyCheck = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {
-      if (typeof event.getModifierState === 'function') {
-        setCapsLockActive(event.getModifierState('CapsLock'));
+      if (typeof event.getModifierState === "function") {
+        setCapsLockActive(event.getModifierState("CapsLock"));
       }
-      if (event.key === 'Escape' && errorMessage) {
+      if (event.key === "Escape" && errorMessage) {
         setErrorMessage(null);
       }
     },
-    [errorMessage]
+    [errorMessage],
   );
 
   const handleClearFields = useCallback(() => {
-    setEmail('');
-    setPassword('');
+    setEmail("");
+    setPassword("");
     setEmailTouched(false);
     setPasswordTouched(false);
     setSubmittedOnce(false);
@@ -174,7 +174,7 @@ export function AdminLoginView({
       setErrorMessage(
         validation.emailError ||
           validation.passwordError ||
-          'Completa tu correo y contraseña para continuar.'
+          "Completa tu correo y contraseña para continuar.",
       );
       if (validation.emailError && emailInputRef.current) {
         emailInputRef.current.focus();
@@ -226,9 +226,7 @@ export function AdminLoginView({
               <p className="text-xs font-semibold tracking-wide text-emerald-800">
                 Panel Administrativo
               </p>
-              <p className="text-xs text-slate-500">
-                Comedor Universitario
-              </p>
+              <p className="text-xs text-slate-500">Comedor Universitario</p>
             </div>
           </div>
 
@@ -315,20 +313,20 @@ export function AdminLoginView({
                   placeholder="Ingresa tu correo electrónico"
                   aria-invalid={showEmailError}
                   aria-describedby={
-                    showEmailError ? 'admin-email-error' : undefined
+                    showEmailError ? "admin-email-error" : undefined
                   }
                   required
                   className={`min-h-[44px] w-full rounded-lg border bg-white pr-10 pl-10 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none ${
                     showEmailError
-                      ? 'border-red-400 focus:border-red-600'
-                      : 'border-slate-300 focus:border-emerald-700'
+                      ? "border-red-400 focus:border-red-600"
+                      : "border-slate-300 focus:border-emerald-700"
                   }`}
                 />
                 {email.length > 0 && !isBusy && (
                   <button
                     type="button"
                     onClick={() => {
-                      setEmail('');
+                      setEmail("");
                       setEmailTouched(false);
                       emailInputRef.current?.focus();
                     }}
@@ -369,7 +367,7 @@ export function AdminLoginView({
                   ref={passwordInputRef}
                   id="admin-password"
                   name="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   value={password}
                   onChange={(e) => {
@@ -382,22 +380,20 @@ export function AdminLoginView({
                   placeholder="Ingresa tu contraseña"
                   aria-invalid={showPasswordError}
                   aria-describedby={
-                    showPasswordError ? 'admin-password-error' : undefined
+                    showPasswordError ? "admin-password-error" : undefined
                   }
                   required
                   className={`min-h-[44px] w-full rounded-lg border bg-white pr-11 pl-10 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none ${
                     showPasswordError
-                      ? 'border-red-400 focus:border-red-600'
-                      : 'border-slate-300 focus:border-emerald-700'
+                      ? "border-red-400 focus:border-red-600"
+                      : "border-slate-300 focus:border-emerald-700"
                   }`}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
                   aria-label={
-                    showPassword
-                      ? 'Ocultar contraseña'
-                      : 'Mostrar contraseña'
+                    showPassword ? "Ocultar contraseña" : "Mostrar contraseña"
                   }
                   className="absolute top-1/2 right-2.5 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-800"
                 >
@@ -426,8 +422,8 @@ export function AdminLoginView({
               >
                 <Lock className="h-4 w-4 shrink-0" />
                 {isBusy
-                  ? 'Verificando credenciales...'
-                  : 'Entrar al panel administrativo'}
+                  ? "Verificando credenciales..."
+                  : "Entrar al panel administrativo"}
               </button>
 
               {(email.length > 0 || password.length > 0) && !isBusy && (

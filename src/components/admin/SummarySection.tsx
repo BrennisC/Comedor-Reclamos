@@ -44,7 +44,7 @@ export function SummarySection({
             {summary.total}
           </p>
           <p className="mt-1 text-xs text-slate-500 tabular-nums">
-            {summary.withPhotos} con evidencia WebP
+            {summary.withPhotos} con evidencia
           </p>
         </div>
 
@@ -74,7 +74,7 @@ export function SummarySection({
             {summary.withPhotos}
           </p>
           <p className="mt-1 text-xs text-slate-500">
-            Fotografías WebP guardadas en Neon Object Storage
+            Fotografías
           </p>
         </div>
       </div>
