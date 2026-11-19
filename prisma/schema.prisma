@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Complaint {
+  id                String    @id
+  description       String
+  mealPeriod        String    @map("meal_period")
+  category          String
+  incidentDate      String    @map("incident_date")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  submissionDate    String    @map("submission_date")
+  imageUrl          String?   @map("image_url")
+  imageFileName     String?   @map("image_file_name")
+  imageSizeBytes    Int?      @map("image_size_bytes")
+  originalSizeBytes Int?      @map("original_size_bytes")
+  deviceHash        String    @map("device_hash")
+  deviceLabel       String    @map("device_label")
+  status            String    @default("pendiente")
+  priority          String    @default("media")
+  adminNote         String?   @map("admin_note")
+  reviewedAt        DateTime? @map("reviewed_at")
+  reviewedBy        String?   @map("reviewed_by")
+
+  @@index([deviceHash, submissionDate], map: "idx_complaints_device_day")
+  @@index([incidentDate], map: "idx_complaints_incident_date")
+  @@index([status], map: "idx_complaints_status")
+  @@map("complaints")
+}
+
+model AdminUser {
+  id           String         @id
+  email        String         @unique
+  name         String
+  passwordHash String         @map("password_hash")
+  passwordSalt String         @map("password_salt")
+  createdAt    DateTime       @default(now()) @map("created_at")
+  sessions     AdminSession[]
+
+  @@map("admin_users")
+}
+
+model AdminSession {
+  id          String     @id @default(cuid())
+  token       String     @unique
+  adminSub    String     @map("admin_sub")
+  email       String
+  name        String
+  adminUserId String?    @map("admin_user_id")
+  adminUser   AdminUser? @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+  expiresAt   DateTime   @map("expires_at")
+  revokedAt   DateTime?  @map("revoked_at")
+  createdAt   DateTime   @default(now()) @map("created_at")
+
+  @@index([adminSub])
+  @@index([expiresAt])
+  @@map("admin_sessions")
+}

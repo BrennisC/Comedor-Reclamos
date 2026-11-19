@@ -1,0 +1,6 @@
+{
+  "name": "Comedor Universitario — Portal de Reclamos",
+  "description": "Plataforma estudiantil de reclamos y reportes diarios para el comedor universitario, con captura de fotos en WebP, almacenamiento en Neon Object Storage y control diario por dispositivo.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
