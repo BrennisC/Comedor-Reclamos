@@ -6,4 +6,10 @@ coverage/
 *.log
 .env*
 !.env.example
+!.dev.vars.example
 .next
+.open-next/
+.wrangler/
+.dev.vars
+cloudflare-env.d.ts
+
