@@ -144,16 +144,14 @@ export default function App() {
         ) : (
           <div className="mx-auto max-w-5xl space-y-6">
             <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
-              <div className="bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-800 px-6 py-7 sm:px-8">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-emerald-100/80">
-                  Guía para estudiantes
-                </p>
+              <div className="bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-800 px-2 py-4 sm:px-8">
                 <h1 className="mt-2 font-display text-2xl font-semibold tracking-tight text-white sm:text-3xl">
-                  Cómo registrar tu reclamo en el Comedor Universitario
+                  Guía para estudiantes: Pasos para presentar un reclamo en el
+                  Comedor Universitario.
                 </h1>
                 <p className="mt-2 max-w-2xl text-sm leading-relaxed text-emerald-50/90">
-                  Revisa los turnos de atención, las categorías disponibles y las
-                  condiciones para enviar tu reporte de forma clara y útil.
+                  Revisa los turnos de atención, las categorías disponibles y
+                  las condiciones para enviar tu reporte de forma clara y útil.
                 </p>
               </div>
 
@@ -167,7 +165,9 @@ export default function App() {
                   </h2>
                   <p className="mt-1 text-sm leading-relaxed text-slate-600">
                     Puedes registrar hasta{" "}
-                    <strong className="font-semibold text-slate-900">3 reclamos por día</strong>{" "}
+                    <strong className="font-semibold text-slate-900">
+                      3 reclamos por día
+                    </strong>{" "}
                     desde el mismo dispositivo, sin iniciar sesión.
                   </p>
                 </div>
@@ -193,8 +193,8 @@ export default function App() {
                     Detalle claro del incidente
                   </h2>
                   <p className="mt-1 text-sm leading-relaxed text-slate-600">
-                    Indica turno, fecha, categoría y una descripción con el contexto
-                    necesario para facilitar la atención del caso.
+                    Indica turno, fecha, categoría y una descripción con el
+                    contexto necesario para facilitar la atención del caso.
                   </p>
                 </div>
               </div>
@@ -210,7 +210,9 @@ export default function App() {
                     <h2 className="font-display text-base font-semibold text-slate-900">
                       Turnos del comedor
                     </h2>
-                    <p className="text-xs text-slate-500">Horarios de atención</p>
+                    <p className="text-xs text-slate-500">
+                      Horarios de atención
+                    </p>
                   </div>
                 </div>
                 <ul className="divide-y divide-slate-200">
@@ -223,7 +225,9 @@ export default function App() {
                         <p className="text-sm font-semibold text-slate-900">
                           {period.label}
                         </p>
-                        <p className="text-xs text-slate-500">Servicio regular</p>
+                        <p className="text-xs text-slate-500">
+                          Servicio regular
+                        </p>
                       </div>
                       <span className="shrink-0 rounded-full bg-slate-100 px-3 py-1 font-mono text-xs font-medium text-slate-700 tabular-nums">
                         {period.schedule}

@@ -30,7 +30,7 @@ export function EvidenceUploader({
   onConvertingChange,
 }: EvidenceUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const captureFallbackRef = useRef<HTMLInputElement | null>(null);
+  const captureInputRef = useRef<HTMLInputElement | null>(null);
 
   const [isDragging, setIsDragging] = useState(false);
   const [isConverting, setIsConverting] = useState(false);
@@ -74,6 +74,20 @@ export function EvidenceUploader({
     void processFile(event.dataTransfer.files?.[0] ?? null);
   };
 
+  const isMobileDevice = () => {
+    if (typeof navigator === "undefined") return false;
+    return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  };
+
+  const handleTakePhotoClick = () => {
+    if (disabled || isConverting) return;
+    if (isMobileDevice()) {
+      captureInputRef.current?.click();
+      return;
+    }
+    setIsCameraOpen(true);
+  };
+
   const savingsPct =
     image && image.originalSizeBytes > 0
       ? Math.max(
@@ -100,12 +114,13 @@ export function EvidenceUploader({
         className="hidden"
       />
       <input
-        ref={captureFallbackRef}
+        id="evidence-capture-input"
+        ref={captureInputRef}
         type="file"
         accept="image/*"
         capture="environment"
         onChange={handleFileChange}
-        className="hidden"
+        className="sr-only"
       />
 
       {!image ? (
@@ -151,7 +166,7 @@ export function EvidenceUploader({
             </button>
             <button
               type="button"
-              onClick={() => setIsCameraOpen(true)}
+              onClick={handleTakePhotoClick}
               disabled={isConverting || disabled}
               className="inline-flex min-h-[42px] flex-1 items-center justify-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-800 disabled:opacity-50 sm:flex-initial whitespace-nowrap"
             >
@@ -208,7 +223,6 @@ export function EvidenceUploader({
           onImageChange(img);
           onError(null);
         }}
-        onFallbackToFile={() => captureFallbackRef.current?.click()}
       />
     </div>
   );

@@ -75,7 +75,7 @@ export const MEAL_PERIODS: {
   label: string;
   schedule: string;
 }[] = [
-  { id: "desayuno", label: "Desayuno", schedule: "07:00 – 08:00" },
+  { id: "desayuno", label: "Desayuno", schedule: "07:00 – 09:00" },
   { id: "almuerzo", label: "Almuerzo", schedule: "12:00 – 14:00" },
   { id: "cena", label: "Cena", schedule: "18:00 – 20:00" },
 ];
