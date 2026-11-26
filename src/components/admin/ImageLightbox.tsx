@@ -2,7 +2,7 @@
 
 import { X } from 'lucide-react';
 import { getProtectedImageUrl } from '../../lib/api';
-import { formatBytes } from '../../lib/webp';
+import { formatFileBytes } from '../../lib/webp';
 import {
   getCategoryLabel,
   getMealPeriodLabel,
@@ -34,7 +34,7 @@ export function ImageLightbox({ item, onClose }: ImageLightboxProps) {
               {getMealPeriodLabel(item.mealPeriod)}
             </strong>{' '}
             · {getCategoryLabel(item.category)} · {item.incidentDate} · WebP (
-            {formatBytes(item.imageSizeBytes)})
+            {formatFileBytes(item.imageSizeBytes)})
           </div>
           <button
             type="button"

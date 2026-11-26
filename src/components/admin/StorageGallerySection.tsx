@@ -9,7 +9,7 @@ import {
   queryKeys,
   type StorageImageInfo,
 } from '../../lib/api';
-import { formatBytes } from '../../lib/webp';
+import { formatFileBytes } from '../../lib/webp';
 import { getCategoryLabel, type ComplaintCategory } from '../../types/complaint';
 
 const MEAL_LABELS: Record<string, string> = {
@@ -175,7 +175,7 @@ export function StorageGallerySection() {
                         {image.key.split('/').pop()}
                       </p>
                       <p className="text-[11px] text-slate-500 tabular-nums">
-                        {formatBytes(image.size)}
+                        {formatFileBytes(image.size)}
                         {image.lastModified
                           ? ` · ${new Date(image.lastModified).toLocaleDateString('es-ES')}`
                           : ''}
@@ -206,7 +206,7 @@ export function StorageGallerySection() {
                   {selected.key}
                 </p>
                 <p className="text-xs text-slate-500 tabular-nums">
-                  {formatBytes(selected.size)}
+                  {formatFileBytes(selected.size)}
                   {selected.lastModified
                     ? ` · ${new Date(selected.lastModified).toLocaleString('es-ES')}`
                     : ''}

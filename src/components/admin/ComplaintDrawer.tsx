@@ -2,7 +2,7 @@
 
 import { Trash2, X } from 'lucide-react';
 import { getProtectedImageUrl } from '../../lib/api';
-import { formatBytes } from '../../lib/webp';
+import { formatFileBytes } from '../../lib/webp';
 import {
   COMPLAINT_PRIORITIES,
   COMPLAINT_STATUSES,
@@ -97,8 +97,8 @@ export function ComplaintDrawer({
               </div>
               <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 tabular-nums">
                 <span>
-                  WebP {formatBytes(item.imageSizeBytes)} (original{' '}
-                  {formatBytes(item.originalSizeBytes)})
+                  WebP {formatFileBytes(item.imageSizeBytes)} (original{' '}
+                  {formatFileBytes(item.originalSizeBytes)})
                 </span>
                 <span className="font-medium text-emerald-800">Neon Object Storage</span>
               </div>

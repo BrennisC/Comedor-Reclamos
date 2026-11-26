@@ -1,6 +1,6 @@
 'use client';
 
-import { formatBytes } from '../../lib/webp';
+import { formatFileBytes } from '../../lib/webp';
 import {
   getCategoryLabel,
   getMealPeriodLabel,
@@ -43,7 +43,7 @@ export function DeleteComplaintDialog({
                     {
                       id: 'webp-storage',
                       label: item.imageFileName || 'Evidencia WebP',
-                      detail: `Archivo optimizado (${formatBytes(item.imageSizeBytes)})`,
+                      detail: `Archivo optimizado (${formatFileBytes(item.imageSizeBytes)})`,
                       kind: 'image' as const,
                     },
                   ]

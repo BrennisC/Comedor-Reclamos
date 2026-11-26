@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CheckSquare, Image as ImageIcon, Search, SlidersHorizontal, Square, Trash2 } from 'lucide-react';
 import { bulkUpdateComplaints, getProtectedImageUrl } from '../../lib/api';
-import { formatBytes } from '../../lib/webp';
+import { formatFileBytes } from '../../lib/webp';
 import {
   COMPLAINT_CATEGORIES,
   COMPLAINT_PRIORITIES,
@@ -373,7 +373,7 @@ export function InboxSection({
                         {item.imageSizeBytes ? (
                           <>
                             <span aria-hidden="true">·</span>
-                            <span>WebP {formatBytes(item.imageSizeBytes)}</span>
+                            <span>WebP {formatFileBytes(item.imageSizeBytes)}</span>
                           </>
                         ) : null}
                       </div>
