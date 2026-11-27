@@ -17,7 +17,8 @@ import { MealPeriodSelector } from "./forms/MealPeriodSelector";
 import { SubmittingOverlay } from "./forms/SubmittingOverlay";
 import { useSubmitComplaint } from "../hooks/useSubmitComplaint";
 
-const MIN_DESCRIPTION_LENGTH = 60;
+const MIN_DESCRIPTION_LENGTH = 40;
+const MAX_DESCRIPTION_LENGTH = 100;
 const DEFAULT_LIMIT = 3;
 
 interface ComplaintFormProps {
@@ -80,6 +81,13 @@ export function ComplaintForm({ quota }: ComplaintFormProps) {
       return;
     }
 
+    if (trimmedLength > MAX_DESCRIPTION_LENGTH) {
+      setErrorMessage(
+        `El detalle no puede superar los ${MAX_DESCRIPTION_LENGTH} caracteres.`,
+      );
+      return;
+    }
+
     submitMutation.mutate({
       description,
       mealPeriod,
@@ -111,7 +119,11 @@ export function ComplaintForm({ quota }: ComplaintFormProps) {
           {/* Turno y fecha */}
           <div className="grid grid-cols-1 gap-6 px-6 py-5 md:grid-cols-12">
             <div className="md:col-span-8">
-              <MealPeriodSelector value={mealPeriod} onChange={setMealPeriod} />
+              <MealPeriodSelector
+                value={mealPeriod}
+                incidentDate={incidentDate}
+                onChange={setMealPeriod}
+              />
             </div>
             <div className="md:col-span-4">
               <label
@@ -147,18 +159,28 @@ export function ComplaintForm({ quota }: ComplaintFormProps) {
                 Detalle de la queja
               </label>
               <span className="text-xs text-slate-500 tabular-nums">
-                {trimmedLength} / {MIN_DESCRIPTION_LENGTH} mín.
+                {description.length} / {MAX_DESCRIPTION_LENGTH}
               </span>
             </div>
             <textarea
               id="complaint-description"
+              aria-describedby="complaint-description-help"
               rows={4}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe qué ocurrió con el plato, bebida o atención del comedor..."
+              minLength={MIN_DESCRIPTION_LENGTH}
+              maxLength={MAX_DESCRIPTION_LENGTH}
               required
               className="mt-2 w-full rounded-lg border border-slate-300 bg-white px-3.5 py-3 text-sm leading-relaxed text-slate-900 placeholder:text-slate-400 focus:border-emerald-700 focus:outline-none"
             />
+            <p
+              id="complaint-description-help"
+              className="mt-1.5 text-xs text-slate-500"
+            >
+              Escribe entre {MIN_DESCRIPTION_LENGTH} y {MAX_DESCRIPTION_LENGTH}{" "}
+              caracteres (una o dos oraciones concretas).
+            </p>
           </div>
 
           {/* Evidencia */}

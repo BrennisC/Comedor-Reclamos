@@ -80,6 +80,21 @@ export const MEAL_PERIODS: {
   { id: "cena", label: "Cena", schedule: "18:00 – 20:00" },
 ];
 
+export const SUNDAY_HOLIDAY_MEAL_PERIODS: typeof MEAL_PERIODS = [
+  { id: "desayuno", label: "Desayuno", schedule: "07:30 – 09:00" },
+  { id: "almuerzo", label: "Almuerzo", schedule: "12:00 – 13:30" },
+  { id: "cena", label: "Cena", schedule: "18:00 – 19:00" },
+];
+
+export function getMealPeriodsForDate(date: string): typeof MEAL_PERIODS {
+  if (!date) return MEAL_PERIODS;
+
+  const [year, month, day] = date.split("-").map(Number);
+  const isSunday = new Date(year, month - 1, day).getDay() === 0;
+
+  return isSunday ? SUNDAY_HOLIDAY_MEAL_PERIODS : MEAL_PERIODS;
+}
+
 export const COMPLAINT_CATEGORIES: {
   id: ComplaintCategory;
   label: string;

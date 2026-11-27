@@ -109,6 +109,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (description.length > 100) {
+      return NextResponse.json(
+        {
+          error: 'El detalle del reclamo no puede superar los 100 caracteres.',
+        },
+        { status: 400 }
+      );
+    }
+
     if (!VALID_MEAL_PERIODS.has(mealPeriod)) {
       return NextResponse.json(
         {

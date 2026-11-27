@@ -12,7 +12,6 @@ const PAGE_W = 1400;
 const PAGE_H = 1980;
 const MARGIN = 64;
 const CONTENT_W = PAGE_W - MARGIN * 2;
-const GAP = 24;
 const ROW_H = 54;
 
 const FONT = '"Segoe UI", "Helvetica Neue", Arial, sans-serif';
@@ -24,14 +23,7 @@ const COLORS = {
   soft: '#94a3b8',
   line: '#e2e8f0',
   surface: '#f8fafc',
-  emerald: '#047857',
   emeraldDark: '#065f46',
-  emeraldSoft: '#d1fae5',
-  amber: '#b45309',
-  amberSoft: '#fef3c7',
-  sky: '#0369a1',
-  skySoft: '#e0f2fe',
-  red: '#b91c1c',
   white: '#ffffff',
 };
 
@@ -212,186 +204,6 @@ function drawCover(
   ctx.textAlign = 'left';
 }
 
-function drawKpis(ctx: CanvasRenderingContext2D, summary: ComplaintsSummary, top: number) {
-  const cards = [
-    { label: 'Pendientes', value: summary.byStatus.pendiente, color: COLORS.amber },
-    { label: 'En revisión', value: summary.byStatus.en_revision, color: COLORS.sky },
-    { label: 'Resueltos', value: summary.byStatus.resuelto, color: COLORS.emerald },
-    { label: 'Con fotografía', value: summary.withPhotos, color: '#7c3aed' },
-  ];
-  const cardW = (CONTENT_W - GAP * (cards.length - 1)) / cards.length;
-  const height = 140;
-
-  cards.forEach((card, index) => {
-    const x = MARGIN + index * (cardW + GAP);
-    roundRect(ctx, x, top, cardW, height, 20);
-    ctx.fillStyle = COLORS.white;
-    ctx.fill();
-    ctx.strokeStyle = COLORS.line;
-    ctx.lineWidth = 2;
-    ctx.stroke();
-
-    roundRect(ctx, x, top, 8, height, 4);
-    ctx.fillStyle = card.color;
-    ctx.fill();
-
-    ctx.fillStyle = COLORS.muted;
-    ctx.font = font(600, 18);
-    ctx.fillText(card.label.toUpperCase(), x + 28, top + 46);
-
-    ctx.fillStyle = COLORS.ink;
-    ctx.font = font(700, 52);
-    ctx.fillText(String(card.value), x + 28, top + 112);
-  });
-}
-
-function drawPanel(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  title: string
-) {
-  roundRect(ctx, x, y, width, height, 20);
-  ctx.fillStyle = COLORS.white;
-  ctx.fill();
-  ctx.strokeStyle = COLORS.line;
-  ctx.lineWidth = 2;
-  ctx.stroke();
-
-  ctx.fillStyle = COLORS.ink;
-  ctx.font = font(600, 21);
-  ctx.fillText(title, x + 24, y + 42);
-}
-
-function drawBars(
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
-  width: number,
-  entries: { label: string; value: number }[],
-  color: string
-) {
-  const max = Math.max(1, ...entries.map((entry) => entry.value));
-  const labelW = 168;
-  const valueW = 42;
-  const barX = x + labelW + 10;
-  const barMaxW = Math.max(20, width - labelW - valueW - 10);
-  let cursor = y;
-
-  for (const entry of entries) {
-    ctx.fillStyle = COLORS.body;
-    ctx.font = font(400, 18);
-    ctx.fillText(truncateText(ctx, entry.label, labelW - 8), x, cursor + 14);
-
-    roundRect(ctx, barX, cursor + 2, barMaxW, 16, 8);
-    ctx.fillStyle = COLORS.surface;
-    ctx.fill();
-
-    const barW = Math.max(6, (entry.value / max) * barMaxW);
-    roundRect(ctx, barX, cursor + 2, barW, 16, 8);
-    ctx.fillStyle = color;
-    ctx.fill();
-
-    ctx.fillStyle = COLORS.ink;
-    ctx.font = font(700, 18);
-    ctx.textAlign = 'right';
-    ctx.fillText(String(entry.value), x + width, cursor + 14);
-    ctx.textAlign = 'left';
-
-    cursor += 38;
-  }
-}
-
-function drawBreakdowns(ctx: CanvasRenderingContext2D, summary: ComplaintsSummary, top: number) {
-  const panelW = (CONTENT_W - GAP * 2) / 3;
-  const height = 246;
-
-  drawPanel(ctx, MARGIN, top, panelW, height, 'Por turno');
-  drawBars(
-    ctx,
-    MARGIN + 24,
-    top + 62,
-    panelW - 48,
-    [
-      { label: 'Desayuno', value: summary.byMealPeriod.desayuno },
-      { label: 'Almuerzo', value: summary.byMealPeriod.almuerzo },
-      { label: 'Cena', value: summary.byMealPeriod.cena },
-    ],
-    COLORS.emerald
-  );
-
-  drawPanel(ctx, MARGIN + panelW + GAP, top, panelW, height, 'Por estado');
-  drawBars(
-    ctx,
-    MARGIN + panelW + GAP + 24,
-    top + 62,
-    panelW - 48,
-    [
-      { label: 'Pendiente', value: summary.byStatus.pendiente },
-      { label: 'En revisión', value: summary.byStatus.en_revision },
-      { label: 'Resuelto', value: summary.byStatus.resuelto },
-      { label: 'Archivado', value: summary.byStatus.archivado },
-    ],
-    COLORS.sky
-  );
-
-  drawPanel(ctx, MARGIN + (panelW + GAP) * 2, top, panelW, height, 'Por prioridad');
-  drawBars(
-    ctx,
-    MARGIN + (panelW + GAP) * 2 + 24,
-    top + 62,
-    panelW - 48,
-    [
-      { label: 'Alta', value: summary.byPriority.alta },
-      { label: 'Media', value: summary.byPriority.media },
-      { label: 'Baja', value: summary.byPriority.baja },
-    ],
-    COLORS.amber
-  );
-}
-
-function drawCategories(ctx: CanvasRenderingContext2D, summary: ComplaintsSummary, top: number) {
-  const height = 236;
-  drawPanel(ctx, MARGIN, top, CONTENT_W, height, 'Reclamos por categoría');
-
-  const entries = [
-    { label: 'Calidad de cocción', value: summary.byCategory.calidad_coccion },
-    { label: 'Temperatura', value: summary.byCategory.temperatura },
-    { label: 'Higiene y limpieza', value: summary.byCategory.higiene_limpieza },
-    { label: 'Tamaño de porción', value: summary.byCategory.tamano_porcion },
-    { label: 'Atención y espera', value: summary.byCategory.atencion_espera },
-    { label: 'Otros', value: summary.byCategory.otros },
-  ];
-  const max = Math.max(1, ...entries.map((entry) => entry.value));
-  const columnW = (CONTENT_W - 96) / 2;
-  const barMaxW = columnW - 250;
-
-  entries.forEach((entry, index) => {
-    const column = index < 3 ? 0 : 1;
-    const row = index % 3;
-    const x = MARGIN + 24 + column * (columnW + 24);
-    const y = top + 78 + row * 48;
-
-    ctx.fillStyle = COLORS.body;
-    ctx.font = font(400, 18);
-    ctx.fillText(truncateText(ctx, entry.label, 190), x, y + 12);
-
-    roundRect(ctx, x + 200, y, barMaxW, 16, 8);
-    ctx.fillStyle = COLORS.surface;
-    ctx.fill();
-
-    roundRect(ctx, x + 200, y, Math.max(6, (entry.value / max) * barMaxW), 16, 8);
-    ctx.fillStyle = COLORS.emerald;
-    ctx.fill();
-
-    ctx.fillStyle = COLORS.ink;
-    ctx.font = font(700, 18);
-    ctx.fillText(String(entry.value), x + 200 + barMaxW + 16, y + 12);
-  });
-}
-
 const TABLE_COLUMNS = [
   { key: 'fecha', label: 'Fecha', width: 148 },
   { key: 'turno', label: 'Turno', width: 136 },
@@ -562,11 +374,8 @@ export async function renderReportPages(input: ReportInput): Promise<HTMLCanvasE
 
     if (pageNumber === 1) {
       drawCover(ctx, input, MARGIN, logo);
-      drawKpis(ctx, input.summary, 282);
-      drawBreakdowns(ctx, input.summary, 450);
-      drawCategories(ctx, input.summary, 724);
-      tableTop = 988;
-      capacity = 15;
+      tableTop = 282;
+      capacity = 28;
     } else {
       drawContinuationHeader(ctx, input, pageNumber, logo);
       tableTop = 196;

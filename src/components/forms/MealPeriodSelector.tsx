@@ -1,21 +1,38 @@
-import { MEAL_PERIODS, type MealPeriod } from "@/types/complaint";
+import {
+  getMealPeriodsForDate,
+  type MealPeriod,
+} from "@/types/complaint";
 
 interface MealPeriodSelectorProps {
   value: MealPeriod;
+  incidentDate: string;
   onChange: (value: MealPeriod) => void;
 }
 
 export function MealPeriodSelector({
   value,
+  incidentDate,
   onChange,
 }: MealPeriodSelectorProps) {
+  const mealPeriods = getMealPeriodsForDate(incidentDate);
+  const isSunday = incidentDate
+    ? new Date(`${incidentDate}T00:00:00`).getDay() === 0
+    : false;
+
   return (
     <div>
-      <span className="block text-sm font-medium text-slate-800">
-        Turno del comedor
-      </span>
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <span className="block text-sm font-medium text-slate-800">
+          Turno del comedor
+        </span>
+        {isSunday && (
+          <span className="text-xs font-medium text-emerald-700">
+            Horario de domingos y feriados
+          </span>
+        )}
+      </div>
       <div className="mt-2 grid grid-cols-3 gap-2">
-        {MEAL_PERIODS.map((period) => {
+        {mealPeriods.map((period) => {
           const active = value === period.id;
           return (
             <button

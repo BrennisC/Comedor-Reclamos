@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { CalendarDays, Download } from 'lucide-react';
-import type { DailyMatrixRow } from '../../hooks/useAdminComplaints';
+import { CalendarDays, Download } from "lucide-react";
+import type { DailyMatrixRow } from "../../hooks/useAdminComplaints";
 
 interface ReportsSectionProps {
   dailyMatrix: DailyMatrixRow[];
@@ -23,9 +23,6 @@ export function ReportsSection({
           <h2 className="font-display text-base font-semibold text-slate-900">
             Consolidado diario por fecha y turno
           </h2>
-          <p className="mt-0.5 text-xs text-slate-500">
-            Matriz organizada automáticamente a partir de los reclamos almacenados en Neon DB.
-          </p>
         </div>
         <button
           type="button"
@@ -34,7 +31,7 @@ export function ReportsSection({
           className="inline-flex min-h-[40px] items-center gap-2 rounded-lg bg-emerald-700 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-800 disabled:opacity-50 whitespace-nowrap"
         >
           <Download className="h-4 w-4" />
-          {isExporting ? 'Generando PDF...' : 'Descargar reporte PDF'}
+          {isExporting ? "Generando PDF..." : "Descargar reporte PDF"}
         </button>
       </div>
 
@@ -54,7 +51,10 @@ export function ReportsSection({
           <tbody className="divide-y divide-slate-200 tabular-nums">
             {dailyMatrix.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-5 py-12 text-center text-sm text-slate-500">
+                <td
+                  colSpan={7}
+                  className="px-5 py-12 text-center text-sm text-slate-500"
+                >
                   No existen datos diarios registrados todavía.
                 </td>
               </tr>

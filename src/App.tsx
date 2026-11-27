@@ -7,7 +7,11 @@ import { Calendar, Camera, Lock, ShieldCheck, Utensils } from "lucide-react";
 import Image from "next/image";
 import { ComplaintForm } from "./components/ComplaintForm";
 import { fetchQuota, queryKeys } from "./lib/api";
-import { COMPLAINT_CATEGORIES, MEAL_PERIODS } from "./types/complaint";
+import {
+  COMPLAINT_CATEGORIES,
+  MEAL_PERIODS,
+  SUNDAY_HOLIDAY_MEAL_PERIODS,
+} from "./types/complaint";
 
 type StudentSubTab = "nuevo" | "guia";
 
@@ -215,26 +219,34 @@ export default function App() {
                     </p>
                   </div>
                 </div>
-                <ul className="divide-y divide-slate-200">
-                  {MEAL_PERIODS.map((period) => (
-                    <li
-                      key={period.id}
-                      className="flex items-center justify-between gap-4 px-5 py-4"
-                    >
-                      <div className="min-w-0">
-                        <p className="text-sm font-semibold text-slate-900">
-                          {period.label}
-                        </p>
-                        <p className="text-xs text-slate-500">
-                          Servicio regular
-                        </p>
-                      </div>
-                      <span className="shrink-0 rounded-full bg-slate-100 px-3 py-1 font-mono text-xs font-medium text-slate-700 tabular-nums">
-                        {period.schedule}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                {[
+                  { title: "Lunes a sábado", periods: MEAL_PERIODS },
+                  {
+                    title: "Domingos y feriados",
+                    periods: SUNDAY_HOLIDAY_MEAL_PERIODS,
+                  },
+                ].map(({ title, periods }) => (
+                  <div key={title} className="border-b border-slate-200 last:border-b-0">
+                    <p className="bg-slate-50 px-5 py-2 text-xs font-semibold uppercase tracking-wide text-slate-600">
+                      {title}
+                    </p>
+                    <ul className="divide-y divide-slate-200">
+                      {periods.map((period) => (
+                        <li
+                          key={`${title}-${period.id}`}
+                          className="flex items-center justify-between gap-4 px-5 py-3"
+                        >
+                          <p className="text-sm font-semibold text-slate-900">
+                            {period.label}
+                          </p>
+                          <span className="shrink-0 rounded-full bg-slate-100 px-3 py-1 font-mono text-xs font-medium text-slate-700 tabular-nums">
+                            {period.schedule}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
 
               <div className="rounded-2xl border border-slate-200 bg-white lg:col-span-3">
